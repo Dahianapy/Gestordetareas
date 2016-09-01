@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">My Task Manager</string>
+    <string name="escriba_nombre">Your name</string>
+    <string name="escriba_email">Your email</string>
+    <string name="btn_guardar">Save</string>
+    <string name="nombre_error">The name feild can not be empty</string>
+    <string name="email_error">The email is not valid</string>
+    <string name="welcome_msj">welcome</string>
+</resources>
