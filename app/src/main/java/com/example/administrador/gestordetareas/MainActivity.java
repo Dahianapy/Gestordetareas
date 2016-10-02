@@ -22,10 +22,12 @@ public class MainActivity extends AppCompatActivity {
     // se declara
     ListView usuariosListView;
 
-    List<String> usuarios = new ArrayList<String>();
+    List<String> contactos = new ArrayList<String>();
 
 
     ArrayAdapter<String> adapter;
+    /// se inicializa
+    ContactoDao contactoDao;
 
 
 
@@ -40,10 +42,19 @@ public class MainActivity extends AppCompatActivity {
         emailEditext = (EditText) findViewById(R.id.editTextEmail);
         guardarButton = (Button) findViewById(R.id.buttonGuardar);
 
+        // iniciar la bbdd
+
+        contactoDao = new ContactoDao(this);
+        // recuperar todos los contactos
+        List<Contacto> contactosEntidad = contactoDao.seleccionarTodos();
+
+        contactos = contactosToString(contactosEntidad);
+
+
         // generar la lista estas tres lineas
         usuariosListView = (ListView)findViewById(R.id.listViewUsuarios);
 
-        adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,android.R.id.text1,usuarios);
+        adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,android.R.id.text1,contactos);
 
         usuariosListView.setAdapter(adapter);
 
@@ -69,9 +80,16 @@ public class MainActivity extends AppCompatActivity {
                     // debuelve un contexto
                     Toast.makeText(getApplicationContext(),mensaje,Toast.LENGTH_LONG).show();
 
+                    // para crear
+                    Contacto c = new Contacto();
+                    c.setNombre(nombre);
+                    c.setEmail(email);
+
+                    contactoDao.crear(c);
+
                     // agregar datos
                     String datos = nombre+" "+email;
-                    usuarios.add(datos);
+                    contactos.add(datos);
                     adapter.notifyDataSetChanged();
 
 
@@ -102,6 +120,13 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+    private List<String> contactosToString(List<Contacto> contactosEntidad){
+        List<String> result = new ArrayList<>();
+        for (Contacto c:contactosEntidad){
+            result.add(c.getNombre()+"/n"+c.getEmail());
+        }
+        return result;
+    }
 
     private boolean validarNombre(String nombre){
         return !nombre.equals("");
@@ -116,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
     //private boolean validarNombre(String nombre, String email){
         //return !nombre.equals("")&& Patterns.EMAIL_ADDRESS.matcher(email).matches();
     //}
+
 }
 
 
